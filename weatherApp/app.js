@@ -15,7 +15,7 @@ search.addEventListener("click", function(e) {
     let city = input.value; 
     // If input is empty show a msg
     if (city === '') {
-        alert('Please write something in input')
+        alert("Please enter a city")
         return
     }
     checkWeather(city); 
@@ -29,7 +29,12 @@ async function checkWeather(city) {
     // Fetch Data 
     const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`);   
     const data = await response.json(); 
-    console.log(data);
+    // console.log(data);
+
+    if (response.status == 404) {
+        alert("Please enter a valid city name")
+        return
+    }
 
     document.querySelector(".city").innerHTML = data.name;
     document.querySelector(".temperature").innerHTML = Math.round(data.main.temp) + "°C";
@@ -49,8 +54,8 @@ async function checkWeather(city) {
         weatherIcon.src = "images/mist.png"; 
     } else if (data.weather[0].main == "Snow") {
         weatherIcon.src = "images/snow.png"; 
+    }
     
-}
+    document.querySelector(".weather").style.display = "block"; 
 
 }
-checkWeather(); 
